@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  client:
+    image: react-app
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  server:
+    image: node-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - mongo-data:/data/db
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
